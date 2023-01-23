@@ -41,6 +41,12 @@
     <ClCompile Include="Modes.cpp">
       <Filter>KamataEngine</Filter>
     </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>KamataEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Function.cpp">
+      <Filter>KamataEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -124,5 +130,8 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Scenes.h" />
     <ClInclude Include="Modes.h" />
+    <ClInclude Include="Function.h" />
+    <ClInclude Include="Particle.h" />
+    <ClInclude Include="GetInfo.h" />
   </ItemGroup>
 </Project>

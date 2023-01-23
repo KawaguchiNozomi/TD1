@@ -12,8 +12,10 @@ void Scenes::Update(char keys[],char prekeys[])
 		}
 		break;
 	case Scenes::SELECT:
-		if (keys[DIK_A]) {
+		mode_->SelectUpdate(keys,prekeys);
+		if (keys[DIK_SPACE]&&prekeys[DIK_SPACE]==0) {
 			scene_ = PLAY;
+			mode_->SetMap();
 			player_ = new Player;
 		}
 		break;
@@ -25,8 +27,10 @@ void Scenes::Update(char keys[],char prekeys[])
 	}
 }
 
-void Scenes::Draw()
+
+void Scenes::Draw(char*keys)
 {
+	Novice::DrawBox(0, 0, 1280, 720, 0, BLACK, kFillModeSolid);
 	switch (scene_)
 	{
 	case Scenes::TITLE:
@@ -34,10 +38,17 @@ void Scenes::Draw()
 		break;
 	case Scenes::SELECT:
 		Novice::DrawBox(0, 0, 100, 100, 0, BLUE, kFillModeSolid);
+		mode_->SelectDraw();
 		break;
 	case Scenes::PLAY:
 		Novice::DrawBox(0, 0, 100, 100, 0, RED, kFillModeSolid);
-		player_->Draw();
+		
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				Novice::DrawBox(i * 64, j * 64, 64, 64, 0, BLUE, kFillModeWireFrame);
+			}
+		}
+		player_->Draw(keys);
 		break;
 	default:
 		break;

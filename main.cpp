@@ -1,5 +1,6 @@
 ﻿#include <Novice.h>
 #include "Scenes.h"
+#include "GetInfo.h"
 
 const char kWindowTitle[] = "学籍番号";
 
@@ -7,7 +8,7 @@ const char kWindowTitle[] = "学籍番号";
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// ライブラリの初期化
-	Novice::Initialize(kWindowTitle, 1280, 720);
+	Novice::Initialize(kWindowTitle, GetInfo::GetWindowWidth(), GetInfo::GetWindowHeight());
 
 	// キー入力結果を受け取る箱
 	char keys[256] = {0};
@@ -38,8 +39,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		///
 		/// ↓描画処理ここから
 		///
-		Novice::DrawBox(0, 0, 1280, 720, 0, BLACK, kFillModeSolid);
-		scene->Draw();
+		scene->Draw(keys);
 		
 		///
 		/// ↑描画処理ここまで
