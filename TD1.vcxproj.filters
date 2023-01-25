@@ -14,6 +14,9 @@
     <Filter Include="KamataEngine\Adapter">
       <UniqueIdentifier>{c6468eb4-788b-4a83-b207-a5f4804e56c5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="header">
+      <UniqueIdentifier>{b633dec8-ebd7-43cb-bf8d-cceb77c89a8f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="C:\KamataEngine\DirectXGame\base\DirectXCommon.cpp">
@@ -35,9 +38,6 @@
     <ClCompile Include="Player.cpp">
       <Filter>KamataEngine</Filter>
     </ClCompile>
-    <ClCompile Include="Scenes.cpp">
-      <Filter>KamataEngine</Filter>
-    </ClCompile>
     <ClCompile Include="Modes.cpp">
       <Filter>KamataEngine</Filter>
     </ClCompile>
@@ -45,6 +45,12 @@
       <Filter>KamataEngine</Filter>
     </ClCompile>
     <ClCompile Include="Function.cpp">
+      <Filter>KamataEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Scenes.cpp">
+      <Filter>KamataEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerParticle.cpp">
       <Filter>KamataEngine</Filter>
     </ClCompile>
   </ItemGroup>
@@ -127,11 +133,26 @@
     <ClInclude Include="..\DirectXGame\math\Vector4.h">
       <Filter>KamataEngine\Include</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Scenes.h" />
-    <ClInclude Include="Modes.h" />
-    <ClInclude Include="Function.h" />
-    <ClInclude Include="Particle.h" />
-    <ClInclude Include="GetInfo.h" />
+    <ClInclude Include="Function.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="GetInfo.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="Modes.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenes.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerParticle.h">
+      <Filter>header</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

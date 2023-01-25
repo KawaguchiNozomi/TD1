@@ -1,5 +1,5 @@
 #include "Function.h"
-float degreeToRadian(float a) {
+float DegreeToRadian(float a) {
 	float radian;
 	radian = a * (M_PI / 180.0f);
 	return radian;

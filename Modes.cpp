@@ -33,6 +33,9 @@ int Modes::GetMapInfo(int a)
 	if (a == 2) {
 		return acid_;
 	}
+	if (a == 3) {
+		return lightCage_;
+	}
 	return 0;
 }
 
@@ -40,16 +43,60 @@ void Modes::MapDraw()
 {
 	for (int y = 0; y < GetInfo::GetMapHeigth(); y++) {
 		for (int x = 0; x < GetInfo::GetMapWidth(); x++) {
-			int posX = (x * GetInfo::GetBlockSize());
+			int posX = (x * GetInfo::GetBlockSize())-scrollX;
 			if (map_[y][x] == BLOCK) {
 				Novice::DrawSprite(posX, y * GetInfo::GetBlockSize(), GetMapInfo(1), 1, 1, 0, WHITE);
 			}
 			if (map_[y][x] == ACID) {
 				Novice::DrawSprite(posX, y * GetInfo::GetBlockSize(), GetMapInfo(2), 1, 1, 0, WHITE);
 			}
+			if (map_[y][x] == LIGHTCAGE) {
+				Novice::DrawSprite(posX, y * GetInfo::GetBlockSize(), GetMapInfo(3), 1, 1, 0, WHITE);
+			}
 		}
 	}
+	Novice::ScreenPrintf(0, 100, "x=%d,y=%d,level=%d",playerMapPosX_,playerMapPosY_, playerStandLevel_);
 }
+
+void Modes::SetMapScrollX(int x)
+{
+	scrollX = x;
+}
+
+void Modes::SetPlayerPos(int posX,int posY)
+{
+	playerPosX_ = posX;
+	playerPosY_ = posY;
+}
+
+void Modes::MapCollision()
+{
+	playerMapPosX_ = playerPosX_ / 64;
+	playerMapPosY_ = playerPosY_ / 64;
+	for (int y = 0; y < GetInfo::GetMapHeigth(); y++) {
+		if (map_[y][playerMapPosX_] == LIGHTCAGE) {
+			Novice::DrawEllipse(playerMapPosX_*64 + GetInfo::GetBlockSize() / 2, y*64 + GetInfo::GetBlockSize() / 2, 30, 30, 0, BLUE, kFillModeSolid);
+		}
+	}
+	for (int y = 0; y < GetInfo::GetMapHeigth(); y++) {
+		if (map_[y][playerMapPosX_] == BLOCK) {
+			playerStandLevel_ = y * 64;
+			if (y >= playerMapPosY_) {
+				break;
+			}
+		}
+	}
+	if (map_[playerMapPosY_][playerMapPosX_] == BLOCK) {
+		playerYSpeed_ = 0;
+		isCollide_.y = true;
+	}
+	if (map_[playerMapPosY_][playerMapPosX_] == ACID) {
+		isCollide_.y = false;
+		whereStand_ = 2;
+	}
+	else { isCollide_.y = false; }
+}
+
 
 void Modes::Map1()
 {
@@ -59,10 +106,10 @@ void Modes::Map1()
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{1,1,1,1,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+		{0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,1,1,1,1,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 	};

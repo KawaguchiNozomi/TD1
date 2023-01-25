@@ -1,13 +1,15 @@
 #pragma once
+#include "Function.h"
+#include <Novice.h>
+#include <stdlib.h>
+
 class Particle
 {
 public:
-	void PlayerDust(int playerX, int playerY, int level,char*keys);
-	void PlayerDustDraw(float x, float y, float sclX, float sclY);
-	void SetPlayerDustIsArriveFalse();
+	
 	Particle();
 
-private:
+protected:
 	struct Color
 	{
 		unsigned int R;
@@ -24,10 +26,12 @@ private:
 		float size;
 		int isArrive = false;
 		float speedY;
+		float speedX;
 		int count = 0;
+		int radius;
 	};
-	static const int playerDustMax_ = 10;
-	Dust playerDust_[playerDustMax_];
+
+
 
 };
 
