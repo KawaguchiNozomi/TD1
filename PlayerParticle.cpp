@@ -74,13 +74,53 @@ void PlayerParticle::PlayerDead(int playerX, int playerY)
 
 		}
 	}
+	for (int i = 0; i < playerDeadMistMax_; i++) {
+		if (playerDeadMist_[i].isArrive == false && playerDeadMist_[i].oneTimeArrive == false) {
+			playerDeadMist_[i].color.R = 255; playerDeadMist_[i].color.G = 255; playerDeadMist_[i].color.B = 255; playerDeadMist_[i].color.A = 200;
+			playerDeadMist_[i].x = playerX-deadMistSize_/2;
+			playerDeadMist_[i].y = playerY - deadMistSize_ / 2;
+			playerDeadMist_[i].move.start.x = playerX;
+			playerDeadMist_[i].move.start.y = playerY;
+			playerDeadMist_[i].move.t = 0;
+			playerDeadMist_[i].move.theta = DegreeToRadian(rand() % 360);
+			playerDeadMist_[i].move.target.x = (100 * cosf(playerDeadMist_[i].move.theta) - 100 * sinf(playerDeadMist_[i].move.theta)) + playerX;
+			playerDeadMist_[i].move.target.y = (100 * cosf(playerDeadMist_[i].move.theta) + 100 * sinf(playerDeadMist_[i].move.theta)) + playerY;
+			playerDeadMist_[i].size = RandomRange(9, 10)/10;
+			playerDeadMist_[i].isArrive = true;
+		}
+		if (playerDeadMist_[i].isArrive == true) {
+			playerDeadMist_[i].color.A -= 5;
+			playerDeadMist_[i].color.color=SetColorReturn(playerDeadMist_[i].color.color, playerDeadMist_[i].color.R, playerDeadMist_[i].color.G, playerDeadMist_[i].color.B, playerDeadMist_[i].color.A);
+			playerDeadMist_[i].move.t += 0.005;
+			playerDeadMist_[i].x = (1.0 - playerDeadMist_[i].move.t) * playerDeadMist_[i].move.start.x + playerDeadMist_[i].move.t * playerDeadMist_[i].move.target.x;
+			playerDeadMist_[i].y = (1.0 - playerDeadMist_[i].move.t) * playerDeadMist_[i].move.start.y + playerDeadMist_[i].move.t * playerDeadMist_[i].move.target.y;
+			if (playerDeadMist_[i].color.A <= 0) {
+				playerDeadMist_[i].color.A = 0;
+				playerDeadMist_[i].oneTimeArrive = true;
+				playerDeadMist_[i].isArrive = false;
+			}
+			if (playerDeadMist_[i].move.t >= 0.5) {
+				playerDeadMist_[i].oneTimeArrive = true;
+				playerDeadMist_[i].isArrive = false;
+			}
+		}
+	}
 }
 
 void PlayerParticle::PlayerDeadDraw()
 {
 	for (int i = 0; i < playerDeadMax_; i++)
 	{
-		Novice::DrawEllipse(playerDead_[i].x, playerDead_[i].y, playerDead_[i].radius, playerDead_[i].radius, 0, RED, kFillModeSolid);
+		if (playerDead_[i].isArrive == true) {
+			Novice::DrawEllipse(playerDead_[i].x, playerDead_[i].y, playerDead_[i].radius, playerDead_[i].radius, 0, RED, kFillModeSolid);
+		}
+	}
+	for (int i = 0; i < playerDeadMistMax_; i++) {
+		Novice::SetBlendMode(BlendMode::kBlendModeAdd);
+		if (playerDeadMist_[i].isArrive == true) {
+			Novice::DrawSprite(playerDeadMist_[i].x, playerDeadMist_[i].y, deadMist_, (float)playerDeadMist_[i].size, (float)playerDeadMist_[i].size, 0, playerDeadMist_[i].color.color);
+		}
+		Novice::SetBlendMode(BlendMode::kBlendModeNormal);
 	}
 }
 

@@ -53,6 +53,21 @@
     <ClCompile Include="PlayerParticle.cpp">
       <Filter>KamataEngine</Filter>
     </ClCompile>
+    <ClCompile Include="MapParticle.cpp">
+      <Filter>KamataEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Officer.cpp">
+      <Filter>KamataEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="OfficerParticle.cpp">
+      <Filter>KamataEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Easing.cpp">
+      <Filter>KamataEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerDeadHead.cpp">
+      <Filter>KamataEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -152,6 +167,21 @@
       <Filter>header</Filter>
     </ClInclude>
     <ClInclude Include="PlayerParticle.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="MapParticle.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="Officer.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="OfficerParticle.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="Easing.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerDeadHead.h">
       <Filter>header</Filter>
     </ClInclude>
   </ItemGroup>

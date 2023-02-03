@@ -1,6 +1,8 @@
 #pragma once
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <stdlib.h>
+#include <time.h>
 
 /// <summary>
 /// Šp“x‚Ì•ÏŠ·
@@ -10,7 +12,7 @@
 float DegreeToRadian(float a);
 
 /// <summary>
-/// F‚Ìİ’è
+/// F‚Ìİ’è(void)
 /// </summary>
 /// <param name="color">F‚Ì•Ï”</param>
 /// /// <param name="R">R‚Ì’l</param>
@@ -18,4 +20,32 @@ float DegreeToRadian(float a);
 /// /// <param name="B">B‚Ì’l</param>
 /// /// <param name="A">A‚Ì’l</param>
 /// <returns></returns>
-int SetColor(unsigned int color, int R, int G, int B, int A);
+void SetColor(unsigned int color, int R, int G, int B, int A);
+/// <summary>
+/// F‚Ìİ’è(int)
+/// </summary>
+/// <param name="color">F‚Ì•Ï”</param>
+/// /// <param name="R">R‚Ì’l</param>
+/// /// <param name="G">G‚Ì’l</param>
+/// /// <param name="B">B‚Ì’l</param>
+/// /// <param name="A">A‚Ì’l</param>
+/// <returns></returns>
+int SetColorReturn(unsigned int color, int R, int G, int B, int A);
+/// <summary>
+/// ®”‚Å”ÍˆÍ‚ğƒ‰ƒ“ƒ_ƒ€‚Éo‚·
+/// </summary>
+/// <param name="min">Å¬’l</param>
+/// <param name="max">Å‘å’l</param>
+/// <returns></returns>
+int RandomRange(int min, int max);
+/// <summary>
+/// ‰~‚ÌÕ“Ë”»’è
+/// </summary>
+/// <param name="aX">‰~‚P@x</param>
+/// <param name="aY">‰~‚P@y</param>
+/// <param name="aRadius">‰~‚P@”¼Œa</param>
+/// <param name="bX">‰~‚Q@x</param>
+/// <param name="bY">‰~‚Q@y</param>
+/// <param name="bRadius">‰~‚Q@”¼Œa</param>
+/// <returns></returns>
+int CircleCollision(float aX, float aY, float aRadius, float bX, float bY, float bRadius);

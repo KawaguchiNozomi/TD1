@@ -97,11 +97,16 @@
     <ClCompile Include="C:\KamataEngine\DirectXGame\base\WinApp.cpp" />
     <ClCompile Include="C:\KamataEngine\DirectXGame\scene\GameScene.cpp" />
     <ClCompile Include="C:\KamataEngine\Adapter\Novice.cpp" />
+    <ClCompile Include="Easing.cpp" />
     <ClCompile Include="Function.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MapParticle.cpp" />
     <ClCompile Include="Modes.cpp" />
+    <ClCompile Include="Officer.cpp" />
+    <ClCompile Include="OfficerParticle.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerDeadHead.cpp" />
     <ClCompile Include="PlayerParticle.cpp" />
     <ClCompile Include="Scenes.cpp" />
   </ItemGroup>
@@ -132,11 +137,16 @@
     <ClInclude Include="C:\KamataEngine\DirectXGame\input\Input.h" />
     <ClInclude Include="C:\KamataEngine\DirectXGame\scene\GameScene.h" />
     <ClInclude Include="C:\KamataEngine\Adapter\Novice.h" />
+    <ClInclude Include="Easing.h" />
     <ClInclude Include="Function.h" />
+    <ClInclude Include="MapParticle.h" />
     <ClInclude Include="Modes.h" />
+    <ClInclude Include="Officer.h" />
+    <ClInclude Include="OfficerParticle.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="GetInfo.h" />
+    <ClInclude Include="PlayerDeadHead.h" />
     <ClInclude Include="PlayerParticle.h" />
     <ClInclude Include="Scenes.h" />
   </ItemGroup>

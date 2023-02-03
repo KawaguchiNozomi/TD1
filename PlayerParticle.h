@@ -19,7 +19,11 @@ public:
 private:
 	static const int playerDustMax_ = 10;
 	static const int playerDeadMax_ = 15;
+	static const int playerDeadMistMax_ = 20;
 	Dust playerDust_[playerDustMax_];
 	Dust playerDead_[playerDeadMax_];
+	Dust playerDeadMist_[playerDeadMistMax_];
+	int deadMist_ = Novice::LoadTexture("./Resouce/howa.png");
+	static const int deadMistSize_ = 32;
 };
 
