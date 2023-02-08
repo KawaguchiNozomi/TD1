@@ -68,6 +68,12 @@
     <ClCompile Include="PlayerDeadHead.cpp">
       <Filter>KamataEngine</Filter>
     </ClCompile>
+    <ClCompile Include="BackGround.cpp">
+      <Filter>KamataEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="BackGroundParticle.cpp">
+      <Filter>KamataEngine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -182,6 +188,12 @@
       <Filter>header</Filter>
     </ClInclude>
     <ClInclude Include="PlayerDeadHead.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="BackGround.h">
+      <Filter>header</Filter>
+    </ClInclude>
+    <ClInclude Include="BackGroundParticle.h">
       <Filter>header</Filter>
     </ClInclude>
   </ItemGroup>

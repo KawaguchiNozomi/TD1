@@ -7,7 +7,10 @@ class Modes:public Particle
 {
 private:
 	static const int mapHeight_ = 11;
-	static const int mapWidth_ = 30;
+	static const int mapWidth_ = 100;
+	static const int worldWidth1_ = 30;
+	static const int worldWidth2_ = 40;
+	int worldWidth_;
 public:
 	void SelectDraw();
 	void SelectUpdate(char*keys,char*preKeys);
@@ -18,8 +21,9 @@ public:
 	void MapDraw();
 	void SetMapScrollX(int x);
 	void SetPlayerPos(int posX,int posY);
-	void SetClearFlag(int flag);
-	void MapCollision();
+	void SetClearFlag(bool flag);
+	void SetShake(int shakeX, int shakeY);
+	void MapCollision(char*keys);
 	int GetPlayerSpeedY() { return playerYSpeed_; }
 	int GetIsStand() { return isCollide_.y; }
 	int GetColloideX() { return isCollide_.x; }
@@ -28,6 +32,7 @@ public:
 	int GetWhereStand() { return whereStand_; }
 	int GetNowWorld() { return nowSelect2_; }
 	int GetRemoveSelect() { return removeSelect; }
+	int GetWorldWidth() { return worldWidth_; }
 	Modes();
 
 	enum Mode
@@ -75,10 +80,17 @@ public:
 		BLADE
 	};
 	int map_[mapHeight_][mapWidth_];
+	//横の長さ
 private:
+	int shakeX_ = 0;
+	int shakeY_ = 0;
 	//セレクト処理
-	int select1R_ = Novice::LoadTexture("./Resouce/stageSelect.png");
-	int selectColorR_ = WHITE;
+	int manualButton_ = Novice::LoadTexture("./Resouce/manualButton.png");
+	int select1R_ = Novice::LoadTexture("./Resouce/stageSelect1.png");
+	int select2R_ = Novice::LoadTexture("./Resouce/stageSelect2.png");
+	int title_ = Novice::LoadTexture("./Resouce/titleb.png");
+	int selectColor1_ = 0xFFFF00FF;
+	int selectColor2_ = WHITE;
 	int nowSelect1_ = ROAD;
 	int nowSelect2_= world1;
 
@@ -90,7 +102,10 @@ private:
 	int acid_= Novice::LoadTexture("./Resouce/acid.png");
 	int lightCage_ = Novice::LoadTexture("./Resouce/lightCage.png");
 	int earth_ = Novice::LoadTexture("./Resouce/map4.png");
+	int clearGate_=Novice::LoadTexture("./Resouce/map5.png");
 	int blead_ = Novice::LoadTexture("./Resouce/map6.png");
+	int time_=0;
+	Vector2 difrection_ = {1,1};
 	//ライト
 
 	//プレイヤーの位置情報

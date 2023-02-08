@@ -3,17 +3,22 @@
 
 void Modes::SelectDraw()
 {
-	Novice::DrawSprite(200, 200, select1R_, 1, 1, 0, selectColorR_);
+	Novice::DrawSprite(0, 0, manualButton_, 1, 1, 0, WHITE);
+	Novice::DrawSprite(350, 200, select1R_, 1, 1, 0, selectColor1_);
+	Novice::DrawSprite(350, 400, select2R_, 1, 1, 0, selectColor2_);
+	Novice::DrawSprite(20, 650, title_, 1, 1, 0, WHITE);
 }
 
 void Modes::SelectUpdate(char* keys, char* preKeys)
 {
 	if (keys[DIK_UP] || keys[DIK_W]) {
-		selectColorR_ = 0xFFFF00FF;
+		selectColor1_ = 0xFFFF00FF;
+		selectColor2_ = WHITE;
 		nowSelect2_ = world1;
 	}
 	if (keys[DIK_DOWN] || keys[DIK_S]) {
-		selectColorR_ = WHITE;
+		selectColor1_ = WHITE;
+		selectColor2_ = 0xFFFF00FF;
 		nowSelect2_ = world2;
 	}
 }
@@ -42,6 +47,9 @@ int Modes::GetMapInfo(int a)
 	if (a == 4) {
 		return earth_;
 	}
+	if (a == 5) {
+		return clearGate_;
+	}
 	if (a == 6) {
 		return blead_;
 	}
@@ -50,31 +58,55 @@ int Modes::GetMapInfo(int a)
 
 void Modes::MapDraw()
 {
+	time_++;
+	if (time_ == 0) {
+		difrection_.x = 1;
+		difrection_.y = 1;
+	}
+	if (time_ == 7) {
+		difrection_.x = 1;
+		difrection_.y = -1;
+	}
+	if (time_ == 14) {
+		difrection_.x = -1;
+		difrection_.y = 1;
+	}
+	if (time_ == 21) {
+		difrection_.x = -1;
+		difrection_.y = -1;
+	}
+	if (time_ == 28) {
+		time_ = 0;
+	}
 	for (int y = 0; y < GetInfo::GetMapHeigth(); y++) {
 		for (int x = 0; x < GetInfo::GetMapWidth(); x++) {
 			int posX = (x * GetInfo::GetBlockSize())-scrollX;
 			if (map_[y][x] == BLOCK) {
-				Novice::DrawSprite(posX, y * GetInfo::GetBlockSize(), GetMapInfo(1), 1, 1, 0, WHITE);
+				Novice::DrawSprite(posX+shakeX_, y * GetInfo::GetBlockSize() + shakeY_, GetMapInfo(1), 1, 1, 0, WHITE);
 			}
 			if (map_[y][x] == ACID) {
-				Novice::DrawSprite(posX, y * GetInfo::GetBlockSize(), GetMapInfo(2), 1, 1, 0, WHITE);
+				Novice::DrawSprite(posX+shakeX_, y * GetInfo::GetBlockSize() + shakeY_, GetMapInfo(2), 1, 1, 0, WHITE);
 			}
 			if (map_[y][x] == LIGHTCAGE) {
 				if (touched_.isTouched == true) {
 					CageLigthUpdate();
 				}
-				Novice::DrawSprite(posX, y * GetInfo::GetBlockSize(), GetMapInfo(3), 1, 1, 0, WHITE);
+				Novice::DrawSprite(posX+shakeX_, y * GetInfo::GetBlockSize() + shakeY_, GetMapInfo(3), 1, 1, 0, WHITE);
 			}
 			if (map_[y][x] == EARTH) {
-				Novice::DrawSprite(posX, y * GetInfo::GetBlockSize(), GetMapInfo(4), 1, 1, 0, WHITE);
+				Novice::DrawSprite(posX+shakeX_, y * GetInfo::GetBlockSize() + shakeY_, GetMapInfo(4), 1, 1, 0, WHITE);
+			}
+			if (map_[y][x] == CLEARGATE) {
+				Novice::DrawSprite(posX+shakeX_, y* GetInfo::GetBlockSize() + shakeY_, GetMapInfo(5), 1, 1, 0, WHITE);
 			}
 			if (map_[y][x] == BLADE) {
-				Novice::DrawSprite(posX, y * GetInfo::GetBlockSize(), GetMapInfo(6), 1, 1, 0, WHITE);
+				Novice::DrawSprite(posX+shakeX_, y * GetInfo::GetBlockSize() + shakeY_, GetMapInfo(6), 1 , 1, 0, WHITE);
 			}
 		}
 	}
-   #ifdef _DEBUG
+   #ifdef DEBUG
 	   Novice::ScreenPrintf(0, 100, "x=%d,y=%d,level=%d,x=%d", playerMapPosX_, playerMapPosY_, playerStandLevel_, playerPosX_);
+	   Novice::ScreenPrintf(0, 160, "Flag=%d shake=%d,%d", clearFlag_,shakeX_,shakeY_);
    #endif // _DEBUG
 
 	
@@ -91,17 +123,23 @@ void Modes::SetPlayerPos(int posX,int posY)
 	playerPosY_ = posY;
 }
 
-void Modes::SetClearFlag(int flag)
+void Modes::SetClearFlag(bool flag)
 {
 	clearFlag_ = flag;
 }
 
-void Modes::MapCollision()
+void Modes::SetShake(int shakeX, int shakeY)
+{
+	shakeX_ = shakeX;
+	shakeY_ = shakeY;
+}
+
+void Modes::MapCollision(char*keys)
 {
 	playerMapPosX_ = playerPosX_ / 64;
 	playerMapPosY_ = playerPosY_ / 64;
 	for (int y = 0; y < GetInfo::GetMapHeigth(); y++) {
-		if (map_[y][playerMapPosX_] == LIGHTCAGE) {
+		if (map_[playerMapPosY_][playerMapPosX_] == LIGHTCAGE) {
 				if (touched_.isTouched == false) {
 			SetCageLigthOn(playerPosX_, playerPosY_);
 			SetTouched(playerMapPosX_, playerMapPosY_);
@@ -133,17 +171,6 @@ void Modes::MapCollision()
 		isCollide_.y = true;
 		whereStand_ = 1;
 	}
-	else if (map_[playerMapPosX_+1][ playerMapPosY_] == CLEARGATE) {
-		if (clearFlag_ == true) {
-			isCollide_.x = false;
-			removeSelect = true;
-		}
-		else {
-			playerXSpeed_ = 0;
-			isCollide_.x = true;
-		}
-		isCollide_.y = false;
-	}
 	else if (map_[playerMapPosY_][playerMapPosX_] == BLADE) {
 		isCollide_.y = false;
 		whereStand_ = 3;
@@ -151,6 +178,15 @@ void Modes::MapCollision()
 	else {
 		whereStand_ = 0;
 		isCollide_.y = false; }
+	if (playerMapPosY_ > 1) {
+		if (map_[playerMapPosY_ - 1][playerMapPosX_] == CLEARGATE) {
+			if (clearFlag_ == true) {
+				if (keys[DIK_Z] || keys[DIK_RETURN]) {
+					removeSelect = true;
+				}
+			}
+		}
+	}
 	/*if (map_[playerMapPosY_][playerMapPosX_ + 1] == BLOCK) {
 		isCollide_.x = true;
 	}*/
@@ -159,15 +195,16 @@ void Modes::MapCollision()
 
 void Modes::Map1()
 {
-	int map1[mapHeight_][mapWidth_] = { 
+	worldWidth_ = worldWidth1_;
+	int map1[mapHeight_][worldWidth1_] = { 
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5},
-		{0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,5},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,0,0},
 		{4,4,4,4,4,2,2,4,2,2,4,2,2,4,2,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
@@ -181,18 +218,19 @@ void Modes::Map1()
 
 void Modes::Map2()
 {
-	int map2[mapHeight_][mapWidth_] = {
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,1,1,0,6,6,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{4,4,4,4,4,2,2,4,2,2,4,2,2,4,2,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+	worldWidth_ = worldWidth2_;
+	int map2[mapHeight_][worldWidth2_] = {
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,6,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,6,0},
+		{0,0,0,0,0,0,0,0,0,6,0,0,6,0,0,0,0,6,0,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,6},
+		{0,0,0,0,0,0,0,0,0,0,0,6,6,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,0,0,0,0,0,0},
+		{4,4,4,4,4,2,2,4,2,2,4,2,2,4,2,4,4,6,4,6,4,6,6,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
 	};
 	for (int i = 0; i < mapHeight_; i++) {
 		for (int j = 0; j < mapWidth_; j++) {
@@ -202,10 +240,14 @@ void Modes::Map2()
 }
 
 
+
 Modes::Modes()
 {
-	this->select1R_;
 	this->touched_.isTouched = false;
+	this->removeSelect = false;
+	this->clearFlag_ = false;
+	this->shakeX_ = 0;
+	this->shakeY_ = 0;
 }
 
 void Modes::CageLigthUpdate()

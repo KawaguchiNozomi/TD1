@@ -39,6 +39,7 @@ int RandomRange(int min, int max)
 	unsigned int range = 0;
 	int a = 0;
 	srand(time(nullptr) * rand());
+	srand(rand());
 	if (min < 0) {
 		range = max + (-min) + 1;
 

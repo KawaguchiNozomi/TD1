@@ -17,6 +17,7 @@ public:
 	~Officer();
 private:
 	void FolestOfficer();
+	void CityOfficer();
 	struct Vector2
 	{
 		int x;
@@ -30,9 +31,11 @@ private:
 	int inColloide = false;
 	int radius_ = GetInfo::GetBlockSize();
 	int whereWorld_;
-	int officer_[1] = { Novice::LoadTexture("./Resouce/officer.png") };
-	int officerAct_[1] = { Novice::LoadTexture("./Resouce/officer_act.png") };
-	int clearFlag_ = false;
+	int officer_[2] = { Novice::LoadTexture("./Resouce/officer.png"),
+	                    Novice::LoadTexture("./Resouce/officer2.png")};
+	int officerAct_[2] = { Novice::LoadTexture("./Resouce/officer_act.png"),
+	                       Novice::LoadTexture("./Resouce/officer2_act.png")};
+	bool clearFlag_ = false;
 	OfficerParticle* particle_ = new OfficerParticle;
 
 };

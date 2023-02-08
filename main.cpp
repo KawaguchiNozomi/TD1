@@ -2,7 +2,7 @@
 #include "Scenes.h"
 #include "GetInfo.h"
 
-const char kWindowTitle[] = "学籍番号";
+const char kWindowTitle[] = "GC1A_09_カワグチノゾミ_BlackNoon";
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -14,7 +14,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	char keys[256] = {0};
 	char preKeys[256] = {0};
 
-	int clearFlag[6];
+	int clearFlag[6]; //使ってない
 	Scenes* scene = new Scenes;
 
 	// ウィンドウの×ボタンが押されるまでループ

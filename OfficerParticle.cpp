@@ -54,6 +54,59 @@ void OfficerParticle::FireDraw(int x)
    
 }
 
+void OfficerParticle::CubeUpdate(int x)
+{
+	cubeCoolTime_++;
+	for (int i = 0; i < cubeMax_; i++) {
+		if (cube_[i].isArrive == false&&cubeCoolTime_>=5) {
+			cube_[i].x = RandomRange(-10, 1010);
+			cube_[i].y = RandomRange(-150,-90);
+			cube_[i].speedY = 0;
+			cube_[i].radius = 0.8;
+			cube_[i].color.A = 255;
+			cube_[i].color.R = RandomRange(100,150);
+			cube_[i].color.G = RandomRange(150, 200);
+			cube_[i].color.B = RandomRange(200, 255);
+			cube_[i].isArrive = true;
+			cube_[i].count = 0;
+			cubeCoolTime_ = 0;
+			break;
+		}
+	}
+	for (int i = 0; i < cubeMax_; i++)
+	{
+		cube_[i].color.color = SetColorReturn(cube_[i].color.color, cube_[i].color.R, cube_[i].color.G, cube_[i].color.B, cube_[i].color.A);
+		if(cube_[i].isArrive==true){
+			float airResist = k_ * -cube_[i].speedY;
+			float airResistAccel = airResist / cubeMass_;
+			cubeAccel_[i] = cubeGravity + airResistAccel;
+			cube_[i].speedY += (cubeAccel_[i] / 60.0f);
+			cube_[i].y += (cube_[i].speedY);
+			cube_[i].color.A -= 1;
+			if (cube_[i].y >= 1000) {
+				cube_[i].isArrive = false;
+			}
+		}
+	}
+}
+
+void OfficerParticle::CubeDraw(int x)
+{
+	for (int i = 0; i < cubeMax_; i++)
+	{
+		if (cube_[i].isArrive == true) {
+			if (i% 2 == 0) {
+				Novice::SetBlendMode(BlendMode::kBlendModeAdd);
+			}
+			if (i % 2 == 1) {
+				Novice::SetBlendMode(BlendMode::kBlendModeSubtract);
+			}
+			Novice::DrawSprite(cube_[i].x, cube_[i].y, cubeSprite_, 1, 1, 0, cube_[i].color.color);
+		}
+	}
+	Novice::SetBlendMode(BlendMode::kBlendModeNormal);
+}
+
 OfficerParticle::OfficerParticle() {
 	for (int i = 0; i < fireMax_; i++)
 	{

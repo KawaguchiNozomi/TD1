@@ -51,7 +51,7 @@ private:
 	static const int playerSpriteSize_ = 64;
 	static const int playerSpriteRadius_ = playerSpriteSize_ / 2;
 	static const int mapHeight_ = 11;
-	static const int mapWidth_ = 30;
+	static const int mapWidth_ = 100;
 	static const int windowWidth_ = 1000;
 	static const int windowHeight_=720;
 	static const int baseLevel_ = blockSize_ * 8;

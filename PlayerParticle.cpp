@@ -40,13 +40,14 @@ void PlayerParticle::PlayerDust(int playerX, int playerY, int level, char* keys)
 
 void PlayerParticle::PlayerDustDraw(float x, float y, float sclX, float sclY)
 {
+	Novice::SetBlendMode(BlendMode::kBlendModeNormal);
 	float x_[playerDustMax_];
 	for (int i = 0; i < playerDustMax_; i++) {
 		x_[i] = playerDust_[i].x - sclX;
 		//Novice::SetBlendMode(BlendMode::kBlendModeAdd);
 		Novice::DrawEllipse(x_[i], playerDust_[i].y, playerDust_[i].size, playerDust_[i].size, 0, playerDust_[i].color.color, kFillModeSolid);
-		Novice::SetBlendMode(BlendMode::kBlendModeNormal);
 	}
+	Novice::SetBlendMode(BlendMode::kBlendModeNormal);
 }
 
 void PlayerParticle::SetPlayerDustIsArriveFalse()
